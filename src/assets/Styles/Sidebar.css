@@ -1,0 +1,28 @@
+.sidebar {
+  background-color: #000;
+  color: #fff;
+  /* fixed size handled inline */
+}
+
+.sidebar-link.active-link {
+  font-weight: 600;
+  color: #ffc107 !important;
+}
+
+.hover-style:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-overlay {
+  /* styles handled inline */
+}
+
+.sidebar-tooltip-icon {
+  /* styles handled inline */
+  transition: background-color 0.3s;
+}
+
+.sidebar-tooltip-icon:hover {
+  background-color: #ffc107;
+  color: #000;
+}

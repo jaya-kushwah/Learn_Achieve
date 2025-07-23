@@ -1,0 +1,44 @@
+/* Container.css */
+
+.container-layout {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Sidebar styles */
+.sidebar-wrapper {
+  transition: all 0.3s ease;
+}
+
+.sidebar-wrapper.show {
+  display: block;
+}
+
+.sidebar-wrapper.hide {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .sidebar-wrapper {
+    display: block !important;
+    width: 250px;
+  }
+}
+
+/* Main section */
+.main-section {
+  flex: 1;
+  overflow-x: hidden;
+}
+
+/* Optional: sticky header */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #fff;
+}
+.main-layout {
+  height: 100dvh !important;
+}
