@@ -4,7 +4,7 @@ import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import logo from "../../assets/Images/Logon.png";
+import logo from "../../assets/Images/logon.png";
 import AuthLayout from "../../Layout/AuthLayout";
 import AuthService from "../../services/AuthApiServices";
 import SessionManager from "../../utils/SessionManager";
