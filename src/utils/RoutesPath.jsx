@@ -12,9 +12,11 @@ const RoutesPath = {
   addMock: "/add",
   viewPackage: "/package_view",
   addPackage: "/package_add",
-  addQuestion:"/add_question",
-  viewQuestion:"/view_question",
+  addQuestion:"/question_add",
+  viewQuestion:"/question_view",
   registration:"/registration",
+  userMockTest:"/user_mock",
+  userMockCard:"/card_mock",
 };
 
 export default RoutesPath;

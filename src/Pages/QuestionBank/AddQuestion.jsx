@@ -25,6 +25,7 @@ import successImage from "../../assets/Images/Done.png";
 import RoutesPath from "../../utils/RoutesPath";
 import { FaPen } from "react-icons/fa6";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import FormValidationMessage from "../../utils/MockValid";
 
 const StepIndicator = ({ currentStep, onStepClick }) => (
   <div className="d-flex align-items-center justify-content-start mb-4">
@@ -32,12 +33,7 @@ const StepIndicator = ({ currentStep, onStepClick }) => (
       <React.Fragment key={stepNum}>
         {index !== 0 && (
           <div
-            style={{
-              width: 400,
-              height: 2,
-              backgroundColor: currentStep >= stepNum ? "#1544b1" : "#dee2e6",
-              margin: "0 15px",
-            }}
+            className={`step-line ${currentStep >= stepNum ? "active" : ""}`}
           />
         )}
         <div
@@ -46,11 +42,18 @@ const StepIndicator = ({ currentStep, onStepClick }) => (
             if (stepNum < currentStep) onStepClick(stepNum);
           }}
           style={{
-            width: 40,
-            height: 40,
+            minWidth: 40,
+            minHeight: 40,
+            width: "9vw",
+            height: "9vw",
+            maxWidth: 50,
+            maxHeight: 50,
             backgroundColor: currentStep >= stepNum ? "#1544b1" : "#adb5bd",
             cursor: stepNum < currentStep ? "pointer" : "not-allowed",
             opacity: stepNum > currentStep ? 0.6 : 1,
+            transition: "background-color 0.5s ease",
+            fontSize: "1rem",
+            flexShrink: 0,
           }}
         >
           {currentStep >= stepNum ? <FaCheck /> : `0${stepNum}`}
@@ -355,7 +358,6 @@ const AddQuestion = () => {
         });
     }
   }, [location, setValue]);
-  
 
   useEffect(() => {
     const fetchSubjectsIfEditing = async () => {
@@ -514,11 +516,9 @@ const AddQuestion = () => {
                             </option>
                           ))}
                         </Form.Select>
-                        {errors.class && (
-                          <div className="text-danger">
-                            {errors.class.message}
-                          </div>
-                        )}
+                        <FormValidationMessage
+                          message={errors.class?.message}
+                        />
                       </Form.Group>
                     </Col>
 
@@ -541,11 +541,9 @@ const AddQuestion = () => {
                           ))}
                         </Form.Select>
 
-                        {errors.subject && (
-                          <div className="text-danger">
-                            {errors.subject.message}
-                          </div>
-                        )}
+                        <FormValidationMessage
+                          message={errors.subject?.message}
+                        />
                       </Form.Group>
                     </Col>
                   </Row>
@@ -568,11 +566,9 @@ const AddQuestion = () => {
                           <option>Semi-English</option>
                           <option>Marathi</option>
                         </Form.Select>
-                        {errors.medium && (
-                          <div className="text-danger">
-                            {errors.medium.message}
-                          </div>
-                        )}
+                        <FormValidationMessage
+                          message={errors.medium?.message}
+                        />
                       </Form.Group>
                     </Col>
 
@@ -599,11 +595,9 @@ const AddQuestion = () => {
                           <option value="Comprehensive">Comprehensive</option>
                           <option value="Poem">Poem</option>
                         </Form.Select>
-                        {errors.typeOfQuestion && (
-                          <div className="text-danger">
-                            {errors.typeOfQuestion.message}
-                          </div>
-                        )}
+                            <FormValidationMessage
+                          message={errors.typeOfQuestion?.message}
+                        />
                       </Form.Group>
                     </Col>
                   </Row>
@@ -1039,11 +1033,13 @@ const AddQuestion = () => {
                               </div>
                             </div>
                           ))}
+
                           <span
                             className="btn btn-sm "
                             style={{
                               color: "#28a745",
                               border: "none",
+                              marginLeft: "74%",
                             }}
                             onClick={() => handleSubEdit(q._id)}
                           >

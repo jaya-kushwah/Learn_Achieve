@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import CustomLoader from "../../Components/resusable/CustomLoader";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { registrationSchema } from "../../utils/utils"; 
+import { registrationSchema } from "../../utils/utils";
 
 const StepIndicator = ({ currentStep, onStepClick }) => {
   const steps = [
@@ -22,68 +22,64 @@ const StepIndicator = ({ currentStep, onStepClick }) => {
 
   return (
     <div className="mb-5 px-2">
-      <Row className="align-items-center justify-content-center">
+      <div className="d-flex justify-content-center align-items-center flex-wrap gap-2 gap-sm-0 position-relative">
         {steps.map((step, index) => {
           const isCompleted = step.number < currentStep;
           const isActive = step.number === currentStep;
-
-          // ✅ Allow click only if NOT at step 3
-          const isClickable =
-            isCompleted && currentStep !== 3;
+          const isClickable = isCompleted && currentStep !== 3;
 
           return (
             <React.Fragment key={step.number}>
-              {/* Line between steps */}
+              {/* Line Between Steps */}
               {index !== 0 && (
                 <div
+                  // className="d-none d-sm-block"
                   style={{
-                    height: 2,
-                    width: 330,
+                    height: 1,
+                    flex: 1,
+                    maxWidth: 400,
                     backgroundColor:
                       isActive || isCompleted ? "#f57c00" : "#ccc",
+                    transition: "background-color 0.3s ease",
+                    margin: "0 8px",
+                    zIndex: 0,
+                    marginTop:"-3%"
                   }}
                 />
               )}
 
-              {/* Step Circle */}
+              {/* Circle + Label Wrapper */}
               <div
-                onClick={() => {
-                  if (isClickable) onStepClick(step.number);
-                }}
-                className="rounded-circle d-flex justify-content-center align-items-center text-white fw-bold"
-                style={{
-                  width: 50,
-                  height: 50,
-                  backgroundColor:
-                    isActive || isCompleted ? "#f57c00" : "#ccc",
-                  cursor: isClickable ? "pointer" : "default",
-                  transition: "background-color 0.3s ease",
-                }}
+                className="d-flex flex-column align-items-center text-center"
+                style={{ minWidth: 100 }}
               >
-                {isCompleted ? <FaCheck /> : <step.icon />}
+                <div
+                  onClick={() => {
+                    if (isClickable) onStepClick(step.number);
+                  }}
+                  className="rounded-circle d-flex justify-content-center align-items-center text-white fw-bold"
+                  style={{
+                    width: 50,
+                    height: 50,
+                    backgroundColor:
+                      isActive || isCompleted ? "#f57c00" : "#ccc",
+                    cursor: isClickable ? "pointer" : "default",
+                    transition: "background-color 0.3s ease",
+                    zIndex: 1,
+                  }}
+                >
+                  {isCompleted ? <FaCheck /> : <step.icon />}
+                </div>
+                <div className="mt-2 fw-semibold">{step.label}</div>
               </div>
             </React.Fragment>
           );
         })}
-      </Row>
-
-      {/* Labels */}
-      <Row className="text-center mt-2 justify-content-center">
-        {steps.map((step) => (
-          <div
-            key={step.number}
-            className="text-center"
-            style={{ width: "320px"   , marginLeft: "35px", }}
-          >
-            <h6>{step.label}</h6>
-          </div>
-        ))}
-      </Row>
-      <hr style={{ border: "1.2px solid grey" }} />
+      </div>
+      <hr  style={{ border: "1.2px solid grey",marginTop:"3%" }} />
     </div>
   );
 };
-
 
 const UserSignup = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -92,6 +88,7 @@ const UserSignup = () => {
   const navigate = useNavigate();
 
   const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(""));
+  const [otpEmail, setOtpEmail] = useState();
   const [timer, setTimer] = useState(TIMER_SECONDS);
   const [resendEnabled, setResendEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -125,22 +122,21 @@ const UserSignup = () => {
   const mobile = contactDetails?.mobile;
   const maskedMobile = mobile ? `XXXXXXX${mobile.slice(-4)}` : "";
 
-useEffect(() => {
-  let interval;
+  useEffect(() => {
+    let interval;
 
-  if (currentStep === 3 && timer > 0) {
-    interval = setInterval(() => {
-      setTimer((prev) => prev - 1);
-    }, 1000);
-  }
+    if (currentStep === 3 && timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    }
 
-  if (timer === 0) {
-    setResendEnabled(true);
-  }
+    if (timer === 0) {
+      setResendEnabled(true);
+    }
 
-  return () => clearInterval(interval);
-}, [currentStep, timer]);
-
+    return () => clearInterval(interval);
+  }, [currentStep, timer]);
 
   const handleChange = (e, index) => {
     const value = e.target.value.replace(/\D/, "");
@@ -197,48 +193,30 @@ useEffect(() => {
 
   const handleNext = async () => {
     if (currentStep === 1) {
+      setCurrentStep(2);
+    } else if (currentStep === 2) {
+      setLoading(true);
       try {
-        setLoading(true);
-        const payload = { ...personalDetails };
+        const payload = {
+          ...personalDetails,
+          contactDetails: { ...contactDetails },
+        };
 
         if (payload.registerBy !== "Coordinator") {
           delete payload.uniqueCode;
         }
 
-        const res = await userService.addPersonalDetails(payload);
-        console.log("Personal details submitted:", res.pendingStudent._id);
-        setStudentId(res.pendingStudent._id);
+        const res = await userService.registerStudent(payload);
+        console.log("Registration response:", res);
 
-        setCurrentStep(2);
-      } catch (err) {
-        console.error("Personal detail submit error:", err);
-        toast.error("Failed to submit personal details.");
-      } finally {
-        setLoading(false);
-      }
-    } else if (currentStep === 2) {
-      setLoading(true);
-      try {
-        const contactDetailsPayload = {
-          pendingStudentId: studentId,
-          email: contactDetails.email,
-          mobile: contactDetails.mobile,
-          addressLine1: contactDetails.addressLine1,
-          addressLine2: contactDetails.addressLine2,
-          state: contactDetails.state,
-          district: contactDetails.district,
-          taluka: contactDetails.taluka,
-          pinCode: contactDetails.pinCode,
-        };
-
-        const res = await userService.addContactDetails(contactDetailsPayload);
+        setOtpEmail(contactDetails.email);
         toast.success("OTP sent to your email");
-        console.log("Contact details submitted:", res);
-
-        setCurrentStep(3);
+        setTimeout(() => {
+          setCurrentStep(3);
+        }, 2000);
       } catch (err) {
-        console.error("Contact detail submit error:", err);
-        alert("Failed to submit contact details.");
+        console.error("Registration failed:", err);
+        toast.error(err?.message || "Failed to register.");
       } finally {
         setLoading(false);
       }
@@ -252,21 +230,21 @@ useEffect(() => {
         }
 
         const payload = {
-          pendingStudentId: studentId,
+          email: otpEmail,
           otp: enteredOtp,
         };
 
         const response = await userService.verifyOtpAndRegister(payload);
-        console.log("OTP verified successfully:", response);
+        console.log("OTP verified:", response);
 
         toast.success("Registration completed successfully!");
         setTimeout(() => {
           setCurrentStep(1);
           window.location.reload();
         }, 3000);
-      } catch (error) {
-        console.error("OTP verification failed:", error);
-        toast.error(error?.message || "Failed to verify OTP.");
+      } catch (err) {
+        console.error("OTP verification failed:", err);
+        toast.error(err?.message || "Failed to verify OTP.");
       } finally {
         setLoading(false);
       }
@@ -279,13 +257,13 @@ useEffect(() => {
 
   return (
     <MainLayout>
-      <Container style={{ marginTop: "6%" }}>
+      <div style={{ marginTop: "7%" }}>
         <StepIndicator
           currentStep={currentStep}
           onStepClick={handleStepClick}
         />
 
-        <Form style={{ marginTop: "-2%" }}>
+        <Form>
           {currentStep === 1 && (
             <>
               <h5 className="fw-semibold mb-4">Personal Details</h5>
@@ -711,7 +689,7 @@ useEffect(() => {
             ) : null}
           </div>
         </Form>
-      </Container>
+      </div>
     </MainLayout>
   );
 };

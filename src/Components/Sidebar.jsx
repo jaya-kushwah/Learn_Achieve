@@ -5,9 +5,10 @@ import { FaChevronDown, FaChevronUp, FaBars } from "react-icons/fa";
 
 const sectionMap = {
   mock: ["/add", "/view"],
-  packages: ["/package_add", "/package_view"],
-  question: ["/add_question", "/view_question"],
+  // packages: ["/package_add", "/package_view"],
+  question: ["/question_add", "/question_view"],
   registration: ["/registration"],
+  userMockTest: ["/card_mock"],
 };
 
 const Sidebar = ({ sidebarOpen, toggleSidebar }) => {

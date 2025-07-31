@@ -301,3 +301,43 @@
 .body {
   overflow: hidden !important;
 }
+
+
+.step-line {
+  width: 400px;
+  height: 2px;
+  background-color: #dee2e6;
+  margin: 0 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+.step-line::before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  left: 0;
+  top: 0;
+  width: 0%;
+  background-color: #1544b1;
+  transition: width 0.5s ease;
+}
+
+.step-line.active::before {
+  width: 100%;
+}
+
+.custom-orange-btn {
+  color: #f57c00 !important;
+  border-color: #f57c00 !important;
+  background-color: transparent;
+  transition: 0.3s;
+}
+
+.custom-orange-btn:hover {
+  background-color: #1544B1 !important;
+  color: white !important;
+  border-color: #1544B1 !important;
+}
+
+

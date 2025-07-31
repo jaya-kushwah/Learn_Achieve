@@ -57,19 +57,21 @@ export const mockTestValidationSchema = yup.object().shape({
       })
     )
     .min(1, "At least one subject is required"),
-  parentQuestion: yup
-    .string()
-    .required("Parent Question is required")
-    .test(
-      "not-empty",
-      "Parent Question cannot be empty",
-      (value) => value?.replace(/<(.|\n)*?>/g, "").trim().length > 0
-    ),
+      // totalQuestions: yup.string().required("totalQuestions is required"),
+  // parentQuestion: yup
+  //   .string()
+  //   .required("Parent Question is required")
+  //   .test(
+  //     "not-empty",
+  //     "Parent Question cannot be empty",
+  //     (value) => value?.replace(/<(.|\n)*?>/g, "").trim().length > 0
+  //   ),
 });
+
 
 export const registrationSchema = yup.object().shape({
   firstName: yup.string().required("First name is required"),
-  middleName: yup.string(),
+  middleName: yup.string(), // Optional
   lastName: yup.string().required("Last name is required"),
   dob: yup.date().required("Date of birth is required"),
   gender: yup.string().required("Gender is required"),
@@ -77,32 +79,33 @@ export const registrationSchema = yup.object().shape({
   medium: yup.string().required("Medium is required"),
   class: yup.string().required("Class is required"),
   registerBy: yup.string().required("Register by is required"),
-  uniqueCode: yup.string().when("registerBy", {
-    is: "Coordinator",
-    then: (schema) => schema.required("Unique code is required"),
-    otherwise: (schema) => schema.notRequired(),
-  }),
-  email: yup.string().email("Enter a valid email").required("Email is required"),
-  mobile: yup
-    .string()
-    .required("Mobile number is required")
-    .matches(/^[6-9]\d{9}$/, "Enter a valid 10-digit mobile number"),
-  addressLine1: yup.string().required("Address Line 1 is required"),
-  addressLine2: yup.string(),
-  state: yup.string().required("State is required"),
-  district: yup.string().when("state", {
-    is: (val) => val === "" || val === "Madhya Pradesh",
-    then: (schema) => schema.required("District is required"),
-    otherwise: (schema) => schema.notRequired(),
-  }),
-  taluka: yup.string().when("state", {
-    is: (val) => val === "" || val === "Madhya Pradesh",
-    then: (schema) => schema.required("Taluka is required"),
-    otherwise: (schema) => schema.notRequired(),
-  }),
-  pinCode: yup.string().when("state", {
-    is: (val) => val === "" || val === "Madhya Pradesh",
-    then: (schema) => schema.required("Pin Code is required"),
-    otherwise: (schema) => schema.notRequired(),
-  }),
 });
+
+  // email: yup.string().email("Enter a valid email").required("Email is required"),
+  // mobile: yup
+  //   .string()
+  //   .required("Mobile number is required")
+  //   .matches(/^[6-9]\d{9}$/, "Enter a valid 10-digit mobile number"),
+  // addressLine1: yup.string().required("Address Line 1 is required"),
+  // addressLine2: yup.string(),
+  // state: yup.string().required("State is required"),
+  // district: yup.string().when("state", {
+  //   is: (val) => val === "" || val === "Madhya Pradesh",
+  //   then: (schema) => schema.required("District is required"),
+  //   otherwise: (schema) => schema.notRequired(),
+  // }),
+  // taluka: yup.string().when("state", {
+  //   is: (val) => val === "" || val === "Madhya Pradesh",
+  //   then: (schema) => schema.required("Taluka is required"),
+  //   otherwise: (schema) => schema.notRequired(),
+  // }),
+  // pinCode: yup.string().when("state", {
+  //   is: (val) => val === "" || val === "Madhya Pradesh",
+  //   then: (schema) => schema.required("Pin Code is required"),
+  //   otherwise: (schema) => schema.notRequired(),
+  // }),
+    // uniqueCode: yup.string().when("registerBy", {
+  //   is: "Coordinator",
+  //   then: (schema) => schema.required("Unique code is required"),
+  //   otherwise: (schema) => schema.notRequired(),
+  // }),

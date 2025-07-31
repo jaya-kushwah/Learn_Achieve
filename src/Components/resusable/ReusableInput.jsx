@@ -9,6 +9,8 @@ const ReusableInput = ({
   onChange,
   options = [],
   required = false,
+   control,
+  error,
 }) => {
   return (
     <div className="mb-3">

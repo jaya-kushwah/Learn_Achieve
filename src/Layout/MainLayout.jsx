@@ -3,23 +3,21 @@ import Sidebar from "../Components/Sidebar";
 import Header from "../Components/Header";
 
 function Container({ children }) {
-  const [sidebarOpen, setSidebarOpen] = useState(true); // visible on large by default
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  // Detect screen size & adjust sidebar open state
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
-        setSidebarOpen(false); // hide sidebar on small screen
+        setSidebarOpen(false);
       } else {
-        setSidebarOpen(true); // show on large screens
+        setSidebarOpen(true);
       }
     };
     window.addEventListener("resize", handleResize);
-    handleResize(); // initial check
+    handleResize();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Toggle sidebar open/close
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
   };
@@ -31,16 +29,16 @@ function Container({ children }) {
       <div
         className="flex-grow-1"
         style={{
-          marginLeft: sidebarOpen ? 260 : 0,
-          // width: sidebarOpen ? "calc(100% - 260px)" : "",
-          transition: "margin-left 0.3s ease",
+          marginLeft: sidebarOpen ? "260px" : "0",
+          width: sidebarOpen ? "calc(100% - 260px)" : "100%",
+          transition: "all 0.3s ease",
           position: "relative",
           minHeight: "100vh",
           overflowX: "hidden",
         }}
       >
         <Header toggleSidebar={toggleSidebar} />
-        <div className="mainLayout-content p-3 ">{children}</div>
+        <div className="mainLayout-content p-3">{children}</div>
       </div>
     </div>
   );

@@ -1,0 +1,226 @@
+@media (max-width: 400px) {
+  .col-6 {
+    width: 100% !important;
+  }
+}
+
+ul li .active {
+  background-color: #ff6f00e6;
+  color: white !important;
+}
+
+/* Hide the default checkbox */
+.custom-icon-checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkbox-wrapper {
+  display: inline-block;
+  position: relative;
+  width: 24px;
+}
+.correct-option {
+  color: rgb(50, 163, 50);
+}
+.empty {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  background-color: #fff;
+  border: 1px solid #363535;
+  border-radius: 28%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: red;
+}
+
+/* Create a custom checkbox using the span */
+.checkbox-icon {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  background-color: #fff;
+  border: 2px solid #000;
+  border-radius: 28%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: red;
+}
+
+/* Show the cross icon by default (unchecked state) */
+.checkbox-icon::before {
+  content: "✕";
+  color: #fff;
+  font-size: 12px;
+  display: block;
+}
+
+/* When checked, show the checkmark and change styling */
+.custom-icon-checkbox:checked + .checkbox-icon {
+  background-color: #4caf50;
+  border-color: #4caf50;
+}
+.custom-icon-checkbox + .checkbox-icon {
+  background-color: #fc0000;
+  border-color: red;
+}
+.custom-icon-checkbox:checked + .checkbox-icon::before {
+  content: "✓"; /* Checkmark icon */
+  font-size: 12px;
+  color: white;
+}
+
+.card-body {
+  border: none !important;
+  box-shadow: none;
+  --bs-card-bg: #fff !important;
+  background-color: #fff !important;
+}
+.shadow-mainbox {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.emded {
+  width: 560px;
+  height: 315px;
+}
+
+@media (max-width: 575px) {
+  .emded {
+    width: 100% !important;
+  }
+  .time {
+    font-size: medium !important;
+  }
+}
+/* .actives {
+  background-color: #ff6f00e6 !important  ;
+  color: white !important;
+} */
+ .actives {
+  background-color: #ff6f00e6 !important;
+  color: white !important;
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.actives:hover {
+  background-color: #1544B1 !important;
+  color: white !important;
+}
+
+
+
+/* mockTestQuiz css */
+.question-btn {
+  width: 40px;
+  padding: 4px 0px 4px 0px !important;
+}
+.not-view {
+  background-color: grey !important;
+}
+.right-side {
+  position: sticky;
+  top: 0%;
+}
+.time {
+  font-size: 1vw;
+}
+
+.submit-test {
+  padding: 20px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.emded1 {
+  width: 560px;
+  height: 300px;
+}
+@media (max-width: 1024px) {
+  .emded1 {
+    width: 100% !important;
+  }
+}
+
+.form-check-label:hover {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.form-check-input:focus {
+  box-shadow: none !important;
+  border-color: #ced4da !important;
+}
+
+.left-scroll {
+  max-height: calc(
+    100vh - 80px
+  ); 
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.left-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.left-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+
+/* Scroll only the inner content */
+.right-scrollable {
+  max-height: calc(100vh - 120px); /* adjust if needed */
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Hide scrollbar - Chrome/Safari */
+.right-scrollable::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar - Firefox & IE */
+.right-scrollable {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media (min-width: 992px) {
+  .right-fixed {
+    position: fixed;
+    right: 0;
+    top: 80px; /* adjust if you have a header */
+    width: 33.33%;
+    height: calc(100vh - 80px);
+    overflow: hidden;
+  }
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3); /* still needed for dark tint */
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px); /* for Safari */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}

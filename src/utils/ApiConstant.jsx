@@ -40,7 +40,7 @@ const ApiConstant = {
 
   //REGISTRATION API's
   REGISTER: USER_URL + "register",
-  CONTACT: USER_URL + "contact",
+  // CONTACT: USER_URL + "contact",
   VERIFY: USER_URL + "verify",
 };
 

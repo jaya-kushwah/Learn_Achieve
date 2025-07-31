@@ -1,74 +1,3 @@
-// import React from "react";
-// import { FiBell, FiLogOut } from "react-icons/fi";
-// import {
-//   Navbar,
-//   Container,
-//   Nav,
-//   OverlayTrigger,
-//   Tooltip,
-// } from "react-bootstrap";
-// import { useNavigate } from "react-router-dom";
-// import SessionManager from "../utils/SessionManager";
-// import RoutesPath from "../utils/RoutesPath";
-
-// const Header = () => {
-//   const navigate = useNavigate();
-
-//   const handleLogout = () => {
-//     SessionManager.shared.logout();
-//     navigate(RoutesPath.login);
-//   };
-
-//   return (
-//     <div
-//       style={{ width: "100%", zIndex: "999" }}
-//       className="bg-white shadow-sm position-fixed"
-//     >
-//       <Navbar >
-//         <div className="d-flex justify-content-between align-items-center fw-bold ms-5">
-//           Welcome, Learn & Achieve!
-//           <FiBell size={22} style={{ cursor: "pointer" }} />
-//           {/* <div className="d-flex align-items-center gap-4"> */}
-//             <img
-//               src="https://i.pinimg.com/736x/04/9d/cc/049dcc27092032f5f4b533c35ab3a59c.jpg"
-//               alt="Profile"
-//               className="rounded-circle"
-//               width="35"
-//               height="35"
-//               style={{ objectFit: "cover", cursor: "pointer" }}
-//             />
-
-//             <OverlayTrigger
-//               placement="bottom"
-//                 overlay={<Tooltip id="logout-tooltip">Logout</Tooltip>}
-//             >
-//               <FiLogOut
-//                 size={22}
-//                 style={{ cursor: "pointer" }}
-//                 className="logout-icon"
-//                 onClick={handleLogout}
-//               />
-//             </OverlayTrigger>
-//           </div>
-//         {/* </div> */}
-//       </Navbar>
-
-//       {/* Custom animation style */}
-//       <style>{`
-//                 .logout-icon {
-//                     transition: transform 0.2s ease-in-out, color 0.2s;
-//                 }
-//                 .logout-icon:hover {
-//                     transform: scale(1.2);
-//                     color: #dc3545; /* Bootstrap danger color */
-//                 }
-//             `}</style>
-//     </div>
-//   );
-// };
-
-// export default Header;
-
 import React, { useState, useRef, useEffect } from "react";
 import { FiBell, FiLogOut } from "react-icons/fi";
 import { FaUser, FaLock } from "react-icons/fa";
@@ -119,7 +48,7 @@ const Header = () => {
           </div>
 
           {/* Right Side */}
-          <div className="d-flex align-items-center gap-3 position-relative ms-auto">
+          <div className="d-flex align-items-center gap-3 position-relative ms-auto" ref={dropdownRef}>
             <FiBell size={22} style={{ cursor: "pointer" }} />
 
             <img

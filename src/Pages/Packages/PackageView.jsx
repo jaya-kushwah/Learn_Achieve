@@ -129,7 +129,7 @@ const PackageView = () => {
       <div
         className="p-4"
         style={{
-            marginTop: "4%",
+            marginTop: "3%",
         }}
       >
         <div className="d-flex justify-content-between align-items-center mb-4">

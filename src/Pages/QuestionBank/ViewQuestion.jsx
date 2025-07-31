@@ -211,15 +211,15 @@ const ViewQuestion = () => {
   };
 
   const handleEdit = (id) => {
-    const selectedQuestion = questions.find((q) => q._id === id); 
-    console.log("selectedQuestion Dataa is : ",selectedQuestion);
+    const selectedQuestion = questions.find((q) => q._id === id);
+    console.log("selectedQuestion Dataa is : ", selectedQuestion);
     navigate(RoutesPath.addQuestion, {
       state: { step: 1, editData: selectedQuestion },
     });
   };
 
   return (
- <MainLayout>
+    <MainLayout>
       <div
         className="p-4"
         style={{
@@ -235,358 +235,335 @@ const ViewQuestion = () => {
                 style={{ color: " #1544b1" }}
                 className="breadcrumb-item active"
               >
-              Questions Bank
+                Questions Bank
               </li>
             </ol>
           </nav>
         </div>
 
-            <div
-              className="bg-white rounded shadow-sm p-4"
-            >
-              <h5 className="mb-3"> Question Bank List</h5>
-              <div
+        <div className="bg-white rounded shadow-sm p-4">
+          <h5 className="mb-3"> Question Bank List</h5>
+          <Row className="align-items-center g-2">
+            <Col >
+              <button
+                className="btn btn-light text-danger"
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "15px",
-                  flexWrap: "wrap",
+                  backgroundColor: "#ffe6e6",
+                  border: "none",
+                  width: "38px",
+                  height: "38px",
+                }}
+                disabled={selectedIds.length === 0}
+                onClick={handleDelete}
+              >
+                <RiDeleteBin5Line />
+              </button>
+            </Col>
+
+            <Col xs={12} md={6} lg={5}>
+              <InputGroup
+                style={{
+                  height: "45px",
+                  backgroundColor: "#f5f8fa",
+                  borderRadius: "10px",
+                  overflow: "hidden",
                 }}
               >
-                <button
-                  className="btn btn-light text-danger"
+                <FormControl
+                  placeholder="Search"
+                  className="fw-bold"
+                  onChange={(e) => setCurrentPage(1)}
                   style={{
-                    backgroundColor: "#ffe6e6",
-                    border: "none",
-                    width: "35px",
-                    height: "38px",
-                  }}
-                  disabled={selectedIds.length === 0}
-                  onClick={handleDelete}
-                >
-                  <RiDeleteBin5Line style={{ marginLeft: "-20%" }} />
-                </button>
-
-                <InputGroup
-                  style={{
-                    width: "38%",
-                    height: "45px",
                     backgroundColor: "#f5f8fa",
-                    borderRadius: "10px",
-                    marginLeft: "19%",
                     border: "none",
                     boxShadow: "none",
-                    overflow: "hidden",
+                    paddingLeft: "12px",
+                    outline: "none",
                   }}
-                >
-                  <FormControl
-                    placeholder="Search"
-                    className="fw-bold"
-                    onChange={(e) => {
-                      setCurrentPage(1);
-                    }}
-                    style={{
-                      backgroundColor: "#f5f8fa",
-                      border: "none",
-                      boxShadow: "none",
-                      height: "45px",
-                      paddingLeft: "12px",
-                      outline: "none",
-                    }}
-                  />
-                  <InputGroup.Text
-                    style={{
-                      backgroundColor: "#f5f8fa",
-                      border: "none",
-                      cursor: "pointer",
-                      outline: "none",
-                      boxShadow: "none",
-                    }}
-                  >
-                    <FaSearch />
-                  </InputGroup.Text>
-                </InputGroup>
-
-                {/* Add and Bulk Upload */}
-                <Link
-                  to={RoutesPath.addQuestion}
-                  style={{ textDecoration: "none" }}
-                >
-                  <ButtonGroup>
-                    <Button
-                      style={{
-                        backgroundColor: "#1544b1",
-                        border: "none",
-                        height: "40px",
-                        fontWeight: "500",
-                      }}
-                    >
-                      Add Question Bank
-                    </Button>
-                    <Button
-                      style={{
-                        backgroundColor: "#1665d8",
-                        border: "none",
-                        height: "40px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <FaPlus />
-                    </Button>
-                  </ButtonGroup>
-                </Link>
-
-                <Link
-                  to={RoutesPath.addQuestion}
-                  style={{ textDecoration: "none" }}
-                >
-                  <ButtonGroup>
-                    <Button
-                      style={{
-                        backgroundColor: "#1544b1",
-                        border: "none",
-                        height: "40px",
-                        fontWeight: "500",
-                      }}
-                    >
-                      Bulk Upload
-                    </Button>
-                    <Button
-                      style={{
-                        backgroundColor: "#1665d8",
-                        border: "none",
-                        height: "40px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <FaPlus />
-                    </Button>
-                  </ButtonGroup>
-                </Link>
-              </div>
-
-              <Row className="mt-3 mb-3">
-                <Col md={4}>
-                  <Form.Select
-                    className="custom-input"
-                    value={filters.classId}
-                    onChange={handleClassChange}
-                  >
-                    <option value="">Filter By Class</option>
-                    {classList.map((cls) => (
-                      <option key={cls._id} value={cls._id}>
-                        {cls.class}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </Col>
-                <Col md={4}>
-                  <Form.Select
-                    className="custom-input"
-                    value={filters.subjectId}
-                    onChange={(e) =>
-                      setFilters({ ...filters, subjectId: e.target.value })
-                    }
-                  >
-                    <option value="">Filter By Subject</option>
-                    {subjectList.map((sub) => (
-                      <option key={sub._id} value={sub._id}>
-                        {sub.subject}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </Col>
-                <Col md={4}>
-                  <Form.Select
-                    className="custom-input"
-                    value={filters.medium}
-                    onChange={(e) =>
-                      setFilters({ ...filters, medium: e.target.value })
-                    }
-                  >
-                    <option value="">Filter By Medium</option>
-                    <option value="English">Hindi</option>
-                    <option value="English">English</option>
-                    <option value="English">Semi English</option>
-                    <option value="Semi English">Marathi</option>
-                  </Form.Select>
-                </Col>
-              </Row>
-
-              <div
-                style={{
-                  overflowX: "auto",
-                  scrollbarWidth: "none",
-                  msOverflowStyle: "none",
-                }}
-                className="hide-scrollbar"
-              >
-                <Table
-                  className="table align-middle no-hover"
+                />
+                <InputGroup.Text
                   style={{
-                    minWidth: "1200px",
-                    borderCollapse: "collapse",
-                    border: "1px solid #dee2e6",
+                    backgroundColor: "#f5f8fa",
+                    border: "none",
+                    cursor: "pointer",
                   }}
                 >
-                  <thead>
-                    <tr>
-                      {[
-                        "",
-                        "Sr No.",
-                        "Class",
-                        "Medium",
-                        "Subject",
-                        "Question Bank/SAT Exam",
-                        "Question Type",
-                        "Question",
-                        "Status",
-                        "Action",
-                        "Status",
-                      ].map((head, i) => (
-                        <th
-                          key={i}
+                  <FaSearch />
+                </InputGroup.Text>
+              </InputGroup>
+            </Col>
+
+            <Col xs={12} sm="auto">
+              <Link
+                to={RoutesPath.addQuestion}
+                style={{ textDecoration: "none" }}
+              >
+                <ButtonGroup>
+                  <Button
+                    style={{
+                      backgroundColor: "#1544b1",
+                      border: "none",
+                      height: "40px",
+                      fontWeight: "500",
+                    }}
+                  >
+                    Add Question Bank
+                  </Button>
+                  <Button
+                    style={{
+                      backgroundColor: "#1665d8",
+                      border: "none",
+                      height: "40px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <FaPlus />
+                  </Button>
+                </ButtonGroup>
+              </Link>
+            </Col>
+
+            <Col xs={12} sm="auto">
+              <Link
+                to={RoutesPath.addQuestion}
+                style={{ textDecoration: "none" }}
+              >
+                <ButtonGroup>
+                  <Button
+                    style={{
+                      backgroundColor: "#1544b1",
+                      border: "none",
+                      height: "40px",
+                      fontWeight: "500",
+                    }}
+                  >
+                    Bulk Upload
+                  </Button>
+                  <Button
+                    style={{
+                      backgroundColor: "#1665d8",
+                      border: "none",
+                      height: "40px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <FaPlus />
+                  </Button>
+                </ButtonGroup>
+              </Link>
+            </Col>
+          </Row>
+
+          <Row className="mt-3 mb-3 gx-2 gy-2">
+            <Col md={4} sm="auto">
+              <Form.Select
+                className="custom-input"
+                value={filters.classId}
+                onChange={handleClassChange}
+              >
+                <option value="">Filter By Class</option>
+                {classList.map((cls) => (
+                  <option key={cls._id} value={cls._id}>
+                    {cls.class}
+                  </option>
+                ))}
+              </Form.Select>
+            </Col>
+            <Col md={4} sm="auto">
+              <Form.Select
+                className="custom-input"
+                value={filters.subjectId}
+                onChange={(e) =>
+                  setFilters({ ...filters, subjectId: e.target.value })
+                }
+              >
+                <option value="">Filter By Subject</option>
+                {subjectList.map((sub) => (
+                  <option key={sub._id} value={sub._id}>
+                    {sub.subject}
+                  </option>
+                ))}
+              </Form.Select>
+            </Col>
+            <Col md={4} sm="auto">
+              <Form.Select
+                className="custom-input"
+                value={filters.medium}
+                onChange={(e) =>
+                  setFilters({ ...filters, medium: e.target.value })
+                }
+              >
+                <option value="">Filter By Medium</option>
+                <option value="English">Hindi</option>
+                <option value="English">English</option>
+                <option value="English">Semi English</option>
+                <option value="Semi English">Marathi</option>
+              </Form.Select>
+            </Col>
+          </Row>
+
+          <div
+            style={{
+              overflowX: "auto",
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+            }}
+            className="hide-scrollbar"
+          >
+            <Table
+              className="table align-middle no-hover"
+              style={{
+                minWidth: "1200px",
+                borderCollapse: "collapse",
+                border: "1px solid #dee2e6",
+              }}
+            >
+              <thead>
+                <tr>
+                  {[
+                    "",
+                    "Sr No.",
+                    "Class",
+                    "Medium",
+                    "Subject",
+                    "Question Bank/SAT Exam",
+                    "Question Type",
+                    "Question",
+                    "Status",
+                    "Action",
+                    "Status",
+                  ].map((head, i) => (
+                    <th
+                      key={i}
+                      style={{
+                        padding: "20px 12px",
+                        whiteSpace: "nowrap",
+                        backgroundColor: "#e6f4ff",
+                      }}
+                    >
+                      {head === "" ? (
+                        <Form.Check
+                          className="no-hover-checkbox"
+                          type="checkbox"
+                          checked={
+                            paginatedQuestions.length > 0 &&
+                            selectedIds.length === paginatedQuestions.length
+                          }
+                          onChange={handleSelectAll}
+                        />
+                      ) : (
+                        head
+                      )}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedQuestions.map((q, index) => (
+                  <tr
+                    className="fw-semibold"
+                    style={{ fontSize: "15px", color: "#343a40" }}
+                    key={q.id}
+                  >
+                    <td style={{ padding: "20px 12px" }}>
+                      <Form.Check
+                        type="checkbox"
+                        className="no-hover-checkbox"
+                        checked={selectedIds.includes(q._id)}
+                        onChange={() => handleCheckboxChange(q._id)}
+                      />
+                    </td>
+                    <td style={{ padding: "20px 12px" }}>
+                      {(currentPage - 1) * itemsPerPage + index + 1}
+                    </td>
+                    <td style={{ padding: "20px 12px" }}>{q.classId?.class}</td>
+                    <td style={{ padding: "20px 12px" }}>{q.medium}</td>
+                    <td style={{ padding: "20px 12px" }}>
+                      {q.subjectId?.subject}
+                    </td>
+                    <td style={{ padding: "20px 12px" }}>{q.questionType}</td>
+                    <td style={{ padding: "20px 12px" }}>{q.typeOfQuestion}</td>
+                    <td style={{ padding: "20px 12px" }}>
+                      {q.questionText
+                        ? stripHtml(q.questionText)
+                        : "No questionText found"}
+                    </td>
+
+                    <td style={{ padding: "20px 12px" }}>
+                      <Form.Check
+                        type="switch"
+                        checked={q.status === "active"}
+                        onChange={() => confirmToggleStatus(q._id)}
+                        className="custom-switch"
+                      />
+                    </td>
+
+                    <td style={{ padding: "20px 12px", whiteSpace: "nowrap" }}>
+                      <div className="d-flex align-items-center gap-2">
+                        <button
+                          className="btn btn-sm"
                           style={{
-                            padding: "20px 12px",
-                            whiteSpace: "nowrap",
-                            backgroundColor: "#e6f4ff",
+                            backgroundColor: "#e6fff0",
+                            color: "#28a745",
                           }}
+                          onClick={() => handleEdit(q._id)}
                         >
-                          {head === "" ? (
-                            <Form.Check
-                              className="no-hover-checkbox"
-                              type="checkbox"
-                              checked={
-                                paginatedQuestions.length > 0 &&
-                                selectedIds.length === paginatedQuestions.length
-                              }
-                              onChange={handleSelectAll}
-                            />
-                          ) : (
-                            head
-                          )}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {paginatedQuestions.map((q, index) => (
-                      <tr
-                        className="fw-semibold"
-                        style={{ fontSize: "15px", color: "#343a40" }}
-                        key={q.id}
+                          <FaPen />
+                        </button>
+
+                        <button
+                          className="btn btn-sm"
+                          style={{
+                            backgroundColor: "#ffe6e6",
+                            color: "#dc3545",
+                          }}
+                          onClick={() => handleSingleDelete(q._id)}
+                        >
+                          <RiDeleteBin5Line />
+                        </button>
+                      </div>
+                    </td>
+
+                    <td style={{ padding: "20px 18px" }}>
+                      <span
+                        onClick={() => handleToggles(q._id)}
+                        style={{
+                          fontWeight: 600,
+                          color: q.status === "active" ? "green" : "red",
+                          cursor: "pointer",
+                        }}
                       >
-                        <td style={{ padding: "20px 12px" }}>
-                          <Form.Check
-                            type="checkbox"
-                            className="no-hover-checkbox"
-                            checked={selectedIds.includes(q._id)}
-                            onChange={() => handleCheckboxChange(q._id)}
-                          />
-                        </td>
-                        <td style={{ padding: "20px 12px" }}>
-                          {(currentPage - 1) * itemsPerPage + index + 1}
-                        </td>
-                        <td style={{ padding: "20px 12px" }}>
-                          {q.classId?.class}
-                        </td>
-                        <td style={{ padding: "20px 12px" }}>{q.medium}</td>
-                        <td style={{ padding: "20px 12px" }}>
-                          {q.subjectId?.subject}
-                        </td>
-                        <td style={{ padding: "20px 12px" }}>
-                          {q.questionType}
-                        </td>
-                        <td style={{ padding: "20px 12px" }}>
-                          {q.typeOfQuestion}
-                        </td>
-                        <td style={{ padding: "20px 12px" }}>
-                          {q.questionText
-                            ? stripHtml(q.questionText)
-                            : "No questionText found"}
-                        </td>
-
-                        <td style={{ padding: "20px 12px" }}>
-                          <Form.Check
-                            type="switch"
-                            checked={q.status === "active"}
-                            onChange={() => confirmToggleStatus(q._id)}
-                            className="custom-switch"
-                          />
-                        </td>
-
-                        <td
-                          style={{ padding: "20px 12px", whiteSpace: "nowrap" }}
-                        >
-                          <div className="d-flex align-items-center gap-2">
-                            <button
-                              className="btn btn-sm"
-                              style={{
-                                backgroundColor: "#e6fff0",
-                                color: "#28a745",
-                              }}
-                              onClick={() => handleEdit(q._id)}
-                            >
-                              <FaPen />
-                            </button>
-
-                            <button
-                              className="btn btn-sm"
-                              style={{
-                                backgroundColor: "#ffe6e6",
-                                color: "#dc3545",
-                              }}
-                              onClick={() => handleSingleDelete(q._id)}
-                            >
-                              <RiDeleteBin5Line />
-                            </button>
-                          </div>
-                        </td>
-
-                        <td style={{ padding: "20px 18px" }}>
-                          <span
-                            onClick={() => handleToggles(q._id)}
-                            style={{
-                              fontWeight: 600,
-                              color: q.status === "active" ? "green" : "red",
-                              cursor: "pointer",
-                            }}
-                          >
-                            {q.status === "active" ? "Approved" : "Rejected"}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </div>
-
-              <PopupModal
-                show={showModal}
-                onHide={() => setShowModal(false)}
-                onConfirm={handleStatusChangeConfirmed}
-              />
-
-              {/* Pagination */}
-              <div style={{ marginLeft: "70%" }}>
-                {totalPages > 0 && (
-                  <PaginationButton
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={(page) => setCurrentPage(page)}
-                  />
-                )}
-              </div>
-            </div>
-
-            <ToastContainer
-              position="top-right"
-              autoClose={3000}
-              hideProgressBar
-            />
+                        {q.status === "active" ? "Approved" : "Rejected"}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
           </div>
+
+          <PopupModal
+            show={showModal}
+            onHide={() => setShowModal(false)}
+            onConfirm={handleStatusChangeConfirmed}
+          />
+
+          {/* Pagination */}
+          <div style={{marginLeft:"65%"}}>
+            {totalPages > 0 && (
+              <PaginationButton
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={(page) => setCurrentPage(page)}
+              />
+            )}
+          </div>
+        </div>
+
+        <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
+      </div>
     </MainLayout>
   );
 };
