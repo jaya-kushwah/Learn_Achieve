@@ -3,7 +3,7 @@ import { Row, Col, Form, Button, Card } from "react-bootstrap";
 import { FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import AuthLayout from "../../Layout/AuthLayout";
-import logo from "../../assets/Images/Logon.png";
+import logo from "../../assets/Images/logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import AuthApiServices from "../../services/AuthApiServices";
 import RoutesPath from "../../utils/RoutesPath";

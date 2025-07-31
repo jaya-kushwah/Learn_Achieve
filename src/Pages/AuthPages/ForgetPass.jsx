@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Row, Col, Form, Button, Card } from "react-bootstrap";
 import { FaEnvelope } from "react-icons/fa";
 import AuthLayout from "../../Layout/AuthLayout";
-import logo from "../../assets/Images/Logon.png";
+import logo from "../../assets/Images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import AuthApiServices from "../../services/AuthApiServices";

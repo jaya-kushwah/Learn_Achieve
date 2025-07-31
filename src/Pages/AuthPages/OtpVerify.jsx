@@ -3,7 +3,7 @@ import { Row, Col, Form, Button, Card } from "react-bootstrap";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import AuthLayout from "../../Layout/AuthLayout";
 import { AuthContext } from "../../context/AuthContext";
-import logo from "../../assets/Images/Logon.png";
+import logo from "../../assets/Images/logo.png";
 import { toast } from "react-toastify";
 import AuthApiServices from "../../services/AuthApiServices";
 import SessionManager from "../../utils/SessionManager";
