@@ -50,8 +50,8 @@ const Login = () => {
       <div style={{ marginLeft: "1%", width: "109%", marginTop: "-2%" }} className="d-flex vh-100 justify-content-center align-items-center bg-light">
         <Row className="w-100 justify-content-center">
           <Col>
-            <Card style={{ backgroundColor: "#f8f9fa" }} className="p-4 border-0">
-              <Card.Body>
+            {/* <Card style={{ backgroundColor: "#f8f9fa" }} className="p-4 border-0"> */}
+              {/* <Card.Body> */}
                 <div className="text-center">
                   <img src={logo} alt="Logo" className="mb-4" style={{ width: "150px" }} />
                   <h4 className="mb-2 fw-bold">Welcome Back!</h4>
@@ -114,8 +114,8 @@ const Login = () => {
                     {loading ? <CustomLoader height={30} width={30} color="#fff" /> : "Login"}
                   </Button>
                 </Form>
-              </Card.Body>
-            </Card>
+              {/* </Card.Body> */}
+            {/* </Card> */}
           </Col>
         </Row>
       </div>

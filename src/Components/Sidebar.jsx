@@ -8,7 +8,7 @@ const sectionMap = {
   // packages: ["/package_add", "/package_view"],
   question: ["/question_add", "/question_view"],
   registration: ["/registration"],
-  userMockTest: ["/card_mock"],
+  userMockTest: ["/card_mock","/card_view"],
 };
 
 const Sidebar = ({ sidebarOpen, toggleSidebar }) => {

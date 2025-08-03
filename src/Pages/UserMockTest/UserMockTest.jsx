@@ -6,6 +6,7 @@ import { MdOutlineTimer } from "react-icons/md";
 import RoutesPath from "../../utils/RoutesPath";
 import "../../assets/Styles/UserMockTest.css";
 import successImage from "../../assets/Images/success.png";
+import UserMock from "../../services/UserMock";
 
 function UserMockTest() {
   const location = useLocation();
@@ -17,24 +18,37 @@ function UserMockTest() {
   const [viewedIndexes, setViewedIndexes] = useState([0]);
   const [attemptedIndexes, setAttemptedIndexes] = useState([]);
   const [activeBtn, setActiveBtn] = useState("English");
-  const subjects = ["English", "Hindi", "Geography", "Mathematics", "Physics"];
+  const [subjects, setSubjects] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const questions = [
-    "Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry.",
-    "Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry.",
-    "Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry.",
-    "Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry.",
-    "Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry.",
-    "Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry.",
-    "Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry.",
-    "Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry.",
-    "Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry.",
-    "Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry.",
-    "Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry.",
-  ];
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        if (mock && mock._id && activeBtn) {
+          const selectedSubject = mock.subjects.find(
+            (sub) => sub.subject === activeBtn
+          );
+
+          if (selectedSubject) {
+            const res = await UserMock.getQuestionsBySubject(
+              mock._id,
+              selectedSubject._id
+            );
+            setQuestions(res.questions || []);
+            console.log(res, "hgsgsg");
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch questions:", err.message);
+      }
+    };
+
+    fetchQuestions();
+  }, [activeBtn, mock]);
 
   const options = [
     { label: "A. 78", value: "78" },
@@ -44,8 +58,30 @@ function UserMockTest() {
   ];
 
   useEffect(() => {
+    if (mock?._id) {
+      UserMock.getMockTestDetails(mock._id)
+        .then((res) => {
+          const {
+            subjects = [],
+            subjectQuestions = [],
+            durationInMinutes = 45,
+          } = res || {};
+          if (mock?.subjects?.length)
+            setSubjects(mock.subjects.map((sub) => sub.subject));
+          // setQuestionsData(subjectQuestions);
+          const defaultSubjectId =
+            subjects[0]?.subjectId || subjects[0]?._id || null;
+          // setActiveSubjectId(defaultSubjectId);
+          setTimeLeft(durationInMinutes * 60);
+        })
+        .catch((err) => console.error("Error fetching mock test:", err))
+        .finally(() => setLoading(false));
+    }
+  }, [mock]);
+
+  useEffect(() => {
     if (mock?.duration) setTimeLeft(mock.duration * 60);
-    console.log("sdfghjhgfdsadfghjhgfdsasdfg", mock);
+    console.log("Mock Data:", mock);
   }, [mock]);
 
   useEffect(() => {
@@ -105,19 +141,35 @@ function UserMockTest() {
     }
   };
 
+  const stripHtml = (html) => {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent || div.innerText || "";
+  };
+
+  const handleSubOptionChange = (qIdx, sIdx, selectedOpt) => {
+  setAnswers((prev) => ({
+    ...prev,
+    [`sub-${qIdx}-${sIdx}`]: selectedOpt,
+  }));
+};
+
+
   return (
     <MainLayout>
       {isSubmitted ? (
         <div className="mt-5 text-center">
-          <img src={successImage} alt="SUCCESS"  />  
-          <h2 style={{color:"green"}} className="fw-bold mb-4">Exam Submitted Succesfully !</h2> 
-            <Button
+          <img src={successImage} alt="SUCCESS" />
+          <h2 style={{ color: "green" }} className="fw-bold mb-4">
+            Exam Submitted Succesfully !
+          </h2>
+          <Button
             as={Link}
             to={RoutesPath.userMockCard}
             style={{
               borderRadius: "12px",
               backgroundColor: "#f57c00",
-              border:"none",
+              border: "none",
               padding: "9px",
               color: "white",
             }}
@@ -142,7 +194,7 @@ function UserMockTest() {
                   style={{
                     backgroundColor: activeBtn === subject ? "#f57c00" : "",
                     color: activeBtn === subject ? "#fff" : "#333",
-                    border: activeBtn === subject ? "none" : " #ccc",
+                    border: activeBtn === subject ? "none" : "#ccc",
                     borderRadius: "8px",
                     transition: "0.2s",
                   }}
@@ -151,44 +203,60 @@ function UserMockTest() {
                 </button>
               ))}
             </div>
-            <h5 className="ms-3 mt-4">Question 1</h5>
-            <hr></hr>
-            <h5 className="ms-3 fw-bold">Read Carefully</h5>
-            <h6 className="ms-3 ">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum est
-              exercitationem explicabo officia accusantium nesciu nt, distinctio
-              praesentium soluta unde rem impedit ipsum! Quos quaerat blanditiis
-              impedit voluptatibus dignissimos qui sit. Lorem ipsum, dolor sit
-              amet consectetur adipisicing elit. Repudiandae, nostrum minima
-              delectus laboriosam nihil earum vol uptatum, aperiam aspernatur
-              velit error, saepe voluptates fugit accusamus consequatur totam
-              aliquam officiis illo? Possimus accusamus consequatur totam
-              accusamus consequatur totam delectus laboriosam nihil earum vol
-              uptatum, aperiam aspernatur velit error, saepe voluptates fugit
-              accusamus consequatur totam aliquam officiis illo? Possimus
-              accusamus consequatur totam accusamus consequatur totam!
-            </h6>
-            {questions.map((q, qIdx) => (
-              <div key={qIdx} className="p-3">
-                <p className="fw-medium text-dark">
-                  <strong>{qIdx + 1}. </strong>
-                  {q}
-                </p>
-                <Form className="ms-3">
-                  {options.map((opt, optIdx) => (
-                    <Form.Check
-                      key={optIdx}
-                      type="checkbox"
-                      label={opt.label}
-                      name={`question-${qIdx}`}
-                      className="mb-2"
-                      checked={answers[qIdx] === opt.value}
-                      onChange={() => handleOptionChange(qIdx, opt.value)}
-                    />
-                  ))}
-                </Form>
-              </div>
-            ))}
+
+            {Array.isArray(questions) &&
+              questions.map((q, qIdx) => (
+                <div key={q.questionId} className="p-3">
+                  {/* Main Question Heading */}
+                  <h5 className="ms-3 mt-4">Question {qIdx + 1}</h5>
+                  <hr />
+
+                  {/* Main Question Text */}
+                  <p className="fw-medium text-dark ms-3">
+                    {stripHtml(q.question)}
+                  </p>
+
+                  {/* Main Question Options */}
+                  <Form className="ms-4">
+                    {q.options?.map((opt, optIdx) => (
+                      <Form.Check
+                        key={optIdx}
+                        type="checkbox"
+                        label={stripHtml(opt)}
+                        name={`question-${qIdx}`}
+                        className="mb-2"
+                        checked={answers[qIdx] === opt}
+                        onChange={() => handleOptionChange(qIdx, opt)}
+                      />
+                    ))}
+                  </Form>
+
+                  {/* Sub-questions if any */}
+                  {Array.isArray(q.subQuestions) &&
+                    q.subQuestions.map((sub, sIdx) => (
+                      <div key={sub.subQuestionId} className="ms-4 mt-3">
+                        <p className="fw-bold">
+                          <strong>{sIdx + 1}.</strong> {stripHtml(sub.question)}
+                        </p>
+                        <Form className="ms-3">
+                          {sub.options?.map((opt, optIdx) => (
+                            <Form.Check
+                              key={optIdx}
+                              type="checkbox"
+                              label={stripHtml(opt)}
+                              name={`subquestion-${qIdx}-${sIdx}`}
+                              className="mb-2"
+                              checked={answers[`sub-${qIdx}-${sIdx}`] === opt}
+                              onChange={() =>
+                                handleSubOptionChange(qIdx, sIdx, opt)
+                              }
+                            />
+                          ))}
+                        </Form>
+                      </div>
+                    ))}
+                </div>
+              ))}
 
             <hr></hr>
             <div className="d-flex justify-content-between align-items-center">
@@ -212,9 +280,9 @@ function UserMockTest() {
           <div className="col-sm-5 col-md-4 col-lg-4 pt-4 mt-2 text-end fw-semibold">
             <Link
               to={RoutesPath.userMockCard}
-              style={{ color: "black", textDecoration: "none" }}
+              style={{ color: "#f6821f", textDecoration: "none" }}
             >
-              Back
+              Back &gt;
             </Link>
 
             <div
@@ -339,7 +407,7 @@ function UserMockTest() {
                     className="btn text-danger fw-bold fs-4 text-end "
                     onClick={() => setShowSubmitModal(false)}
                   >
-                  X 
+                    X
                   </button>
                   <div className="d-flex justify-content-between align-items-center">
                     <h5>Are you sure?</h5>
@@ -364,7 +432,7 @@ function UserMockTest() {
                       No. of attempted questions: {attemptedIndexes.length}
                     </span>
                   </div>
-                  <div 
+                  <div
                     className="p-2 rounded mb-4  text-start mt-4"
                     style={{ backgroundColor: "#f8d7da" }}
                   >
@@ -381,7 +449,7 @@ function UserMockTest() {
                       onClick={() => setShowSubmitModal(false)}
                     >
                       No
-                    </Button> 
+                    </Button>
                     <Button
                       variant="outline-warning"
                       className="custom-orange-btn actives fw-semibold px-4 ms-3 w-50"
@@ -404,3 +472,7 @@ function UserMockTest() {
 }
 
 export default UserMockTest;
+
+
+
+

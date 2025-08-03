@@ -23,6 +23,7 @@ import ViewQuestion from "./Pages/QuestionBank/ViewQuestion";
 import UserSignup from "./Pages/Registration/UserSignup";
 import UserMockTest from "./Pages/UserMockTest/UserMockTest";
 import UserMockCard from "./Pages/UserMockTest/UserMockCard";
+import UserMockView from "./Pages/UserMockTest/UserMockView";
 
 const AppRoutes = () => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -45,6 +46,7 @@ const AppRoutes = () => {
           <Route path={RoutesPath.registration} element={<UserSignup></UserSignup>} />
           <Route path={RoutesPath.userMockTest} element={<UserMockTest/>} />
           <Route path={RoutesPath.userMockCard} element={<UserMockCard></UserMockCard>} />
+          <Route path={RoutesPath.userMockView} element={<UserMockView></UserMockView>} />
 
           <Route path="*" element={<Navigate to={RoutesPath.viewMock} replace />} />
         </>

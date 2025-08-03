@@ -7,6 +7,7 @@ const CLASS_URL = BASE_URL + "api/classMaster/";
 const SUBJECT_URL = BASE_URL + "api/subject/";
 const QUESTION_URL = BASE_URL + "api/question/";
 const USER_URL = BASE_URL + "api/student/";
+const USERMOCK_URL = BASE_URL + "api/mockTestfetch/";
 
 const ApiConstant = {
   //AUTHENTICATION API's
@@ -40,8 +41,11 @@ const ApiConstant = {
 
   //REGISTRATION API's
   REGISTER: USER_URL + "register",
-  // CONTACT: USER_URL + "contact",
   VERIFY: USER_URL + "verify",
+
+  //MOCK USER MCQ
+  MOCK_TEST_DETAIL: USERMOCK_URL + "mocktest/",
+  USER_QUESTION_BY_SUBJECT: USERMOCK_URL + "mocktest/", 
 };
 
 export default ApiConstant;

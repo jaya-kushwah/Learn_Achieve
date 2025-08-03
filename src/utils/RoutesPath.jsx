@@ -17,6 +17,7 @@ const RoutesPath = {
   registration:"/registration",
   userMockTest:"/user_mock",
   userMockCard:"/card_mock",
+  userMockView:"/card_view",
 };
 
 export default RoutesPath;

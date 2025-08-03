@@ -76,11 +76,11 @@ const ConfirmPass = () => {
       >
         <Row className="w-100 justify-content-center">
           <Col>
-            <Card
+            {/* <Card
               style={{ backgroundColor: "#f8f9fa" }}
               className="p-4 border-0"
             >
-              <Card.Body>
+              <Card.Body> */}
                 <div className="text-center">
                   <img
                     src={logo}
@@ -153,8 +153,8 @@ const ConfirmPass = () => {
                     </Button>
                   )}
                 </Form>
-              </Card.Body>
-            </Card>
+              {/* </Card.Body>
+            </Card> */}
           </Col>
         </Row>
       </div>
