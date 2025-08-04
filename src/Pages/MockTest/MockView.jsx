@@ -336,7 +336,7 @@ const MockView = () => {
               onHide={() => setShowModal(false)}
               onConfirm={handleStatusChangeConfirmed}
             />
-            <div className="d-flex justify-content-between align-items-center ">
+            <div className="d-flex justify-content-between align-items-center text-truncate ">
               <span className="text-muted ">
                 Showing {(currentPage - 1) * rowsPerPage + 1} to{" "}
                 {Math.min(currentPage * rowsPerPage, totalCount)} of{" "}

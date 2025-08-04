@@ -54,7 +54,7 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
           // top: 15,
           // left: 15,
           color: "#000000ff",
-          padding: "5px",
+          // padding: "5px",
           borderRadius: "50%",
           cursor: "pointer",
           zIndex: 1500,

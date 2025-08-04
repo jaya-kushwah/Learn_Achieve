@@ -164,16 +164,16 @@ const MockAdd = () => {
   return (
     <MainLayout>
       <div
-        className="p-4"
+        className="p-4 text-truncate"                 
         style={{
           marginTop: "3%",
         }}
       >
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h5 className="fw-bold mb-0">MOCK TEST</h5>
-          <nav aria-label="breadcrumb">
-            <ol className="breadcrumb mb-0">
-              <li className="breadcrumb-item text-dark">Dashboard</li>
+          <nav aria-label="breadcrumb ">
+            <ol className="breadcrumb mb-0 ">
+              <li className="breadcrumb-item text-dark ">Dashboard</li>
               <li
                 className="breadcrumb-item active"
                 style={{ color: "#1544b1" }}

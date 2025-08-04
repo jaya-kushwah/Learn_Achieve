@@ -421,7 +421,7 @@ const ViewQuestion = () => {
               }}
             >
               <thead>
-                <tr>
+                <tr >
                   {[
                     "",
                     "Sr No.",

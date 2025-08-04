@@ -43,13 +43,13 @@ const Header = () => {
       <Navbar className="px-4 py-2">
         <div className="d-flex align-items-center w-100">
           {/* Left Side */}
-          <div className="fw-bold fs-5 ms-3" ref={dropdownRef}>
+          <div className="fw-bold fs-5 ms-3 text-truncate" ref={dropdownRef}>
             Welcome, Learn & Achieve!
           </div>
 
           {/* Right Side */}
           <div className="d-flex align-items-center gap-3 position-relative ms-auto" ref={dropdownRef}>
-            <FiBell size={22} style={{ cursor: "pointer" }} />
+            {/* <FiBell size={22} style={{ cursor: "pointer" }} /> */}
 
             <img
               src="https://i.pinimg.com/736x/04/9d/cc/049dcc27092032f5f4b533c35ab3a59c.jpg"

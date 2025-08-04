@@ -7,6 +7,7 @@ import RoutesPath from "../../utils/RoutesPath";
 import "../../assets/Styles/UserMockTest.css";
 import successImage from "../../assets/Images/success.png";
 import UserMock from "../../services/UserMock";
+import { toast } from "react-toastify";
 
 function UserMockTest() {
   const location = useLocation();
@@ -66,12 +67,13 @@ function UserMockTest() {
             subjectQuestions = [],
             durationInMinutes = 45,
           } = res || {};
-          if (mock?.subjects?.length)
-            setSubjects(mock.subjects.map((sub) => sub.subject));
-          // setQuestionsData(subjectQuestions);
-          const defaultSubjectId =
-            subjects[0]?.subjectId || subjects[0]?._id || null;
-          // setActiveSubjectId(defaultSubjectId);
+
+          if (mock?.subjects?.length) {
+            const subjectNames = mock.subjects.map((sub) => sub.subject);
+            setSubjects(subjectNames);
+            setActiveBtn(subjectNames[0]);
+          }
+
           setTimeLeft(durationInMinutes * 60);
         })
         .catch((err) => console.error("Error fetching mock test:", err))
@@ -83,6 +85,12 @@ function UserMockTest() {
     if (mock?.duration) setTimeLeft(mock.duration * 60);
     console.log("Mock Data:", mock);
   }, [mock]);
+
+  useEffect(() => {
+    if (timeLeft <= 0 && !isSubmitted) {
+      setIsSubmitted(true);
+    }
+  }, [timeLeft, isSubmitted]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -119,27 +127,53 @@ function UserMockTest() {
     handleAttempt(qIdx);
   };
 
-  const goToPrevious = () => {
-    if (currentIndex > 0) {
-      const prev = currentIndex - 1;
-      setCurrentIndex(prev);
-      setActiveIndex(prev);
-      if (!viewedIndexes.includes(prev)) {
-        setViewedIndexes((prevList) => [...prevList, prev]);
-      }
-    }
-  };
 
   const goToNext = () => {
-    if (currentIndex < questions.length - 1) {
-      const next = currentIndex + 1;
-      setCurrentIndex(next);
-      setActiveIndex(next);
-      if (!viewedIndexes.includes(next)) {
-        setViewedIndexes((prevList) => [...prevList, next]);
-      }
+  if (currentIndex < questions.length - 1) {
+    const next = currentIndex + 1;
+    setCurrentIndex(next);
+    setActiveIndex(next);
+    if (!viewedIndexes.includes(next)) {
+      setViewedIndexes((prevList) => [...prevList, next]);
     }
-  };
+  } else {
+    const currentSubjectIndex = subjects.findIndex((s) => s === activeBtn);
+    if (currentSubjectIndex < subjects.length - 1) {
+      const nextSubject = subjects[currentSubjectIndex + 1];
+      setActiveBtn(nextSubject);
+      setCurrentIndex(0);
+      setActiveIndex(0);
+      setViewedIndexes([0]);
+    } else {
+     toast.success("Questions is completed now !!!!!!!!!!");
+    }
+  }
+};
+
+const goToPrevious = () => {
+  if (currentIndex > 0) {
+    const prev = currentIndex - 1;
+    setCurrentIndex(prev);
+    setActiveIndex(prev);
+    if (!viewedIndexes.includes(prev)) {
+      setViewedIndexes((prevList) => [...prevList, prev]);
+    }
+  } else {
+    const currentSubjectIndex = subjects.findIndex((s) => s === activeBtn);
+    if (currentSubjectIndex > 0) {
+      const prevSubject = subjects[currentSubjectIndex - 1];
+      setActiveBtn(prevSubject);
+    }
+  }
+};
+
+// useEffect(() => {
+//   if (questions.length > 0) {
+//     setCurrentIndex(0);
+//     setActiveIndex(0);
+//     setViewedIndexes([0]);
+//   }
+// }, [questions]);
 
   const stripHtml = (html) => {
     const div = document.createElement("div");
@@ -148,12 +182,11 @@ function UserMockTest() {
   };
 
   const handleSubOptionChange = (qIdx, sIdx, selectedOpt) => {
-  setAnswers((prev) => ({
-    ...prev,
-    [`sub-${qIdx}-${sIdx}`]: selectedOpt,
-  }));
-};
-
+    setAnswers((prev) => ({
+      ...prev,
+      [`sub-${qIdx}-${sIdx}`]: selectedOpt,
+    }));
+  };
 
   return (
     <MainLayout>
@@ -204,69 +237,68 @@ function UserMockTest() {
               ))}
             </div>
 
-            {Array.isArray(questions) &&
-              questions.map((q, qIdx) => (
-                <div key={q.questionId} className="p-3">
-                  {/* Main Question Heading */}
-                  <h5 className="ms-3 mt-4">Question {qIdx + 1}</h5>
-                  <hr />
+            {questions.length > 0 && (
+              <div className="p-3">
+                <h5 className="ms-3 mt-4">Question {currentIndex + 1}</h5>
+                <hr />
+                <p className="fw-medium text-dark ms-3">
+                  {stripHtml(questions[currentIndex].question)}
+                </p>
 
-                  {/* Main Question Text */}
-                  <p className="fw-medium text-dark ms-3">
-                    {stripHtml(q.question)}
-                  </p>
+                <Form className="ms-4">
+                  {questions[currentIndex].options?.map((opt, optIdx) => (
+                    <Form.Check
+                      key={optIdx}
+                      type="checkbox"
+                      label={stripHtml(opt)}
+                      name={`question-${currentIndex}`}
+                      className="mb-2"
+                      checked={answers[currentIndex] === opt}
+                      onChange={() => handleOptionChange(currentIndex, opt)}
+                    />
+                  ))}
+                </Form>
 
-                  {/* Main Question Options */}
-                  <Form className="ms-4">
-                    {q.options?.map((opt, optIdx) => (
-                      <Form.Check
-                        key={optIdx}
-                        type="checkbox"
-                        label={stripHtml(opt)}
-                        name={`question-${qIdx}`}
-                        className="mb-2"
-                        checked={answers[qIdx] === opt}
-                        onChange={() => handleOptionChange(qIdx, opt)}
-                      />
-                    ))}
-                  </Form>
-
-                  {/* Sub-questions if any */}
-                  {Array.isArray(q.subQuestions) &&
-                    q.subQuestions.map((sub, sIdx) => (
-                      <div key={sub.subQuestionId} className="ms-4 mt-3">
-                        <p className="fw-bold">
-                          <strong>{sIdx + 1}.</strong> {stripHtml(sub.question)}
-                        </p>
-                        <Form className="ms-3">
-                          {sub.options?.map((opt, optIdx) => (
-                            <Form.Check
-                              key={optIdx}
-                              type="checkbox"
-                              label={stripHtml(opt)}
-                              name={`subquestion-${qIdx}-${sIdx}`}
-                              className="mb-2"
-                              checked={answers[`sub-${qIdx}-${sIdx}`] === opt}
-                              onChange={() =>
-                                handleSubOptionChange(qIdx, sIdx, opt)
-                              }
-                            />
-                          ))}
-                        </Form>
-                      </div>
-                    ))}
-                </div>
-              ))}
+                {questions[currentIndex].subQuestions?.map((sub, sIdx) => (
+                  <div key={sub.subQuestionId} className="ms-4 mt-3">
+                    <p className="fw-bold">
+                      <strong>{sIdx + 1}.</strong> {stripHtml(sub.question)}
+                    </p>
+                    <Form className="ms-3">
+                      {sub.options?.map((opt, optIdx) => (
+                        <Form.Check
+                          key={optIdx}
+                          type="checkbox"
+                          label={stripHtml(opt)}
+                          name={`subquestion-${currentIndex}-${sIdx}`}
+                          className="mb-2"
+                          checked={
+                            answers[`sub-${currentIndex}-${sIdx}`] === opt
+                          }
+                          onChange={() =>
+                            handleSubOptionChange(currentIndex, sIdx, opt)
+                          }
+                        />
+                      ))}
+                    </Form>
+                  </div>
+                ))}
+              </div>
+            )}
 
             <hr></hr>
             <div className="d-flex justify-content-between align-items-center">
               <button
                 className="btn actives"
-                disabled={currentIndex === 0}
+                disabled={
+                  currentIndex === 0 &&
+                  subjects.findIndex((s) => s === activeBtn) === 0
+                }
                 onClick={goToPrevious}
               >
                 Previous
               </button>
+
               <button
                 type="button"
                 className="btn actives px-4"
@@ -277,7 +309,7 @@ function UserMockTest() {
             </div>
           </div>
 
-          <div className="col-sm-5 col-md-4 col-lg-4 pt-4 mt-2 text-end fw-semibold">
+          <div className="col-sm-5 col-md-4 col-lg-4 pt-4 mt-3 text-end fw-semibold">
             <Link
               to={RoutesPath.userMockCard}
               style={{ color: "#f6821f", textDecoration: "none" }}
@@ -472,6 +504,7 @@ function UserMockTest() {
 }
 
 export default UserMockTest;
+
 
 
 
